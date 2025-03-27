@@ -1,23 +1,27 @@
-import { defineConfig } from 'eslint/config';
-import globals from 'globals';
+// eslint.config.mjs
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import securityNode from 'eslint-plugin-security-node';
-import eslintConfigPrettier from 'eslint-config-prettier/flat';
+import prettier from 'eslint-config-prettier/flat';
+import prettierPlugin from 'eslint-plugin-prettier';
 
-export default defineConfig([
+export default [
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    files: ['**/*.{js,mjs,cjs,ts}'],
-    languageOptions: {
-      globals: globals.node,
-    },
     plugins: {
-      'security-node': securityNode,
+      '@typescript-eslint': tseslint.plugin,
+      prettier: prettierPlugin,
     },
-    // extends: ['standard-with-typescript', 'prettier'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        sourceType: 'module',
+      },
+    },
     rules: {
-      ...securityNode.configs.recommended.rules,
+      ...prettierPlugin.configs.recommended.rules,
     },
   },
-  tseslint.configs.recommended,
-  eslintConfigPrettier,
-]);
+  prettier,
+];
