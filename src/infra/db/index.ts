@@ -5,17 +5,13 @@ import { resolve } from 'node:path';
 
 import { getDatabaseConfig as config } from './config';
 
-function buildConnectionConfig(logger: Logger): Knex.Config {
+function buildConnectionConfig(): Knex.Config {
   return {
     client: 'pg',
     pool: {
       min: 0,
       max: 5,
       idleTimeoutMillis: 60000,
-      afterCreate: (_: Knex.Client, done: (err?: Error) => void) => {
-        logger.info(`Connected on ${config.DB_NAME} database`);
-        done();
-      },
     },
     connection: {
       host: config.DB_HOST,
@@ -33,7 +29,19 @@ function buildConnectionConfig(logger: Logger): Knex.Config {
 }
 
 function createConnection(logger: Logger) {
-  return knex(buildConnectionConfig(logger));
+  const knexConfig = buildConnectionConfig();
+
+  if (knexConfig?.pool) {
+    knexConfig.pool.afterCreate = function (
+      _: Knex.Client,
+      done: (err?: Error) => void
+    ) {
+      logger.info(`Connected on ${config.DB_NAME} database`);
+      done();
+    };
+  }
+
+  return knex(buildConnectionConfig());
 }
 
-export { createConnection };
+export { createConnection, buildConnectionConfig };
