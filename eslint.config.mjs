@@ -3,6 +3,8 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier/flat';
 import prettierPlugin from 'eslint-plugin-prettier';
+import pluginPromise from 'eslint-plugin-promise';
+import securityNodePlugin from 'eslint-plugin-security-node';
 
 export default [
   js.configs.recommended,
@@ -11,6 +13,8 @@ export default [
     plugins: {
       '@typescript-eslint': tseslint.plugin,
       prettier: prettierPlugin,
+      promise: pluginPromise.configs['flat/recommended'],
+      'security-node': securityNodePlugin,
     },
     languageOptions: {
       parser: tseslint.parser,
@@ -21,6 +25,7 @@ export default [
     },
     rules: {
       ...prettierPlugin.configs.recommended.rules,
+      ...securityNodePlugin.configs.recommended.rules,
     },
   },
   prettier,

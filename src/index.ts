@@ -1,16 +1,23 @@
-import fastify from 'fastify';
+import 'dotenv/config';
 
-const server = fastify();
+import { buildServer } from './server';
 
-server.get('/healtcheck', () => {
-  return 'pong';
-});
+import { logger } from '@/support/logger';
 
-server.listen({ port: 8080 }, (err, address) => {
-  if (err) {
-    console.log(err);
-    process.exit(1);
+async function start() {
+  const server = buildServer(logger);
+
+  const port = Number(process.env.SERVER_PORT ?? 4000);
+  const host = process.env.SERVER_HOST ?? '0.0.0.0';
+
+  try {
+    const url = await server.listen({ port, host });
+
+    logger.info(`🚀 Server ready at: ${url}`);
+  } catch (err) {
+    logger.error(`Error starting server ${err}`);
+    return Promise.reject(err);
   }
+}
 
-  console.log(`Server listening at ${address}`);
-});
+start();
