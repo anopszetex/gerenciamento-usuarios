@@ -8,11 +8,7 @@ import type { Logger } from 'pino';
 function buildServer(logger: Logger): BuildServer {
   const { listen, stop } = factoryServer();
 
-  closeWithGrace({ delay: 500 }, async function ({ signal, err, manual }) {
-    if (err) {
-      logger.error({ signal, err, manual });
-    }
-
+  closeWithGrace({ delay: 500 }, async function () {
     logger.warn('aborting application');
     await stop();
   });
