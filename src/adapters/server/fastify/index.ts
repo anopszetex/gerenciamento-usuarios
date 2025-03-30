@@ -1,15 +1,16 @@
 import fastify from 'fastify';
 
-import type { Server, ServerListen } from './types';
-
 import { userRoutes } from '@/routes';
 
-function factoryServer(): Server {
+import type { Server, ServerListen, Database } from './types';
+import type { Logger } from 'pino';
+
+function factoryServer(database: Database, logger: Logger): Server {
   const app = fastify({
     logger: false,
   });
 
-  app.register(userRoutes, { prefix: '/api' });
+  app.register(userRoutes, { prefix: '/api', database, logger });
 
   return {
     async listen(options: ServerListen): Promise<string> {
