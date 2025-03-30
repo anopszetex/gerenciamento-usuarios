@@ -23,7 +23,7 @@ function buildConnectionConfig(): Knex.Config {
     migrations: {
       directory: resolve(__dirname, './migrations'),
       extension: 'ts',
-      loadExtensions: ['ts'],
+      loadExtensions: ['.ts'],
     },
   };
 }
