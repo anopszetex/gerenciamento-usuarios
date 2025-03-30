@@ -41,7 +41,7 @@ function createConnection(logger: Logger) {
     };
   }
 
-  return knex(buildConnectionConfig());
+  return knex(knexConfig);
 }
 
 export { createConnection, buildConnectionConfig };
