@@ -7,6 +7,7 @@ import { UserRoutesOptions } from '@/adapters/server/fastify/types';
 import { isEmpty, isValidEmail } from '@/domains/register';
 
 import { auth } from '@/infra/config';
+import { verifyJWT } from '@/domains/auth/verify';
 
 interface RegisterBody {
   nome: string;
@@ -99,12 +100,16 @@ function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
     }
 
     const token = jwt.sign({ id: user.id, email: user.email }, auth.JWT_KEY, {
-      expiresIn: '1h',
+      expiresIn: '2h',
     });
 
     logger.info('usuario autenticado com sucesso');
 
     return reply.status(200).send({ token });
+  });
+
+  app.get('/users', { preHandler: verifyJWT }, (req, reply) => {
+    return [];
   });
 }
 
