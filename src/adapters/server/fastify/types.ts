@@ -9,8 +9,13 @@ interface Server {
 }
 
 interface Database {
+  destroy(): Promise<void>;
   create<T>(data: T | T[]): Promise<boolean>;
-  findOne<T, K extends keyof T>(field: K, value: T[K]): Promise<T | undefined>;
+  findOne<T>(
+    table: string,
+    field: keyof T,
+    value: T[keyof T]
+  ): Promise<T | undefined>;
 }
 
 interface UserRoutesOptions extends FastifyPluginOptions {
