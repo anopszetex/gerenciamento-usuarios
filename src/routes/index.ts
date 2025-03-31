@@ -46,7 +46,7 @@ function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
       return reply.status(400).send({ error: 'cpf já existente' });
     }
 
-    await database.create<RegisterBody>({
+    await database.create<RegisterBody>('usuarios', {
       nome,
       email,
       senha: await argon2.hash(senha),

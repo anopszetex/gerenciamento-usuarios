@@ -10,7 +10,7 @@ interface Server {
 
 interface Database {
   destroy(): Promise<void>;
-  create<T>(data: T | T[]): Promise<boolean>;
+  create<T>(table: string, data: T | T[]): Promise<boolean>;
   findOne<T>(
     table: string,
     field: keyof T,

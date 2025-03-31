@@ -5,8 +5,8 @@ function postgreStrategy(conn: Knex) {
     async destroy(): Promise<void> {
       await conn.destroy();
     },
-    async create<T>(data: T | T[]) {
-      const res = await conn('usuarios').insert(data);
+    async create<T>(table: string, data: T | T[]) {
+      const res = await conn(table).insert(data);
       return !!res;
     },
     async findOne<T>(
