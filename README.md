@@ -34,7 +34,7 @@ API simples para gerenciamento de usuários
 }
 ```
 
-- GET /api/users: Listagem de usuários (autenticado)
+- GET /api/users: Listagem de usuários `(autenticado)`
 
 ### 🧪 Scripts
 
