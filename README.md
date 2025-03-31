@@ -1,7 +1,5 @@
 ## 📘 Gerenciamento de Usuários
 
-API simples para gerenciamento de usuários
-
 ### ⚙️ Tecnologias
 
 - Fastify — Framework web rápido e leve para Node.js
@@ -14,25 +12,25 @@ API simples para gerenciamento de usuários
 
 ### 🚀 Subindo o ambiente
 
-1. Subir os containers necessários (ex: PostgreSQL)
+- Subir os containers necessários (ex: PostgreSQL)
 
 ```sh
 docker-compose up -d
 ```
 
-2. Rodar as migrations
+- Rodar as migrations
 
 ```sh
 yarn knex:migrate
 ```
 
-2. Iniciar o servidor
+- Iniciar o servidor
 
 ```
 yarn dev
 ```
 
-Isso irá subir a API com Fastify, conectada ao banco de dados configurado no Docker.
+- Isso irá subir a API com Fastify, conectada ao banco de dados configurado no Docker.
 
 ### 📁 Funcionalidades
 
