@@ -12,6 +12,28 @@ API simples para gerenciamento de usuários
 - Argon2 — Hash seguro de senhas
 - JWT — Autenticação com tokens
 
+### 🚀 Subindo o ambiente
+
+1. Subir os containers necessários (ex: PostgreSQL)
+
+```sh
+docker-compose up -d
+```
+
+2. Rodar as migrations
+
+```sh
+yarn knex:migrate
+```
+
+2. Iniciar o servidor
+
+```
+yarn dev
+```
+
+Isso irá subir a API com Fastify, conectada ao banco de dados configurado no Docker.
+
 ### 📁 Funcionalidades
 
 - POST /api/register: Cadastro de novo usuário
