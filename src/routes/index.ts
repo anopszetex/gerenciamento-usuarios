@@ -1,7 +1,8 @@
 import type { FastifyInstance } from 'fastify';
-import { UserRoutesOptions } from '@/adapters/server/fastify/types';
+import argon2 from 'argon2';
 
-const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
+import { UserRoutesOptions } from '@/adapters/server/fastify/types';
+import { isEmpty, isValidEmail } from '@/domains/register';
 
 interface RegisterBody {
   nome: string;
@@ -16,41 +17,47 @@ function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
   app.post<{ Body: RegisterBody }>('/register', async (req, reply) => {
     const { nome, email, senha, cpf } = req.body;
 
-    if (!nome?.trim()) {
-      throw new TypeError('nome não pode ser vazio');
+    if (isEmpty(nome)) {
+      return reply.status(400).send({ error: 'nome não pode ser vazio' });
     }
 
-    if (!email?.trim()) {
-      throw new TypeError('email não pode ser vazio');
+    if (isEmpty(email)) {
+      return reply.status(400).send({ error: 'email não pode ser vazio' });
     }
 
-    if (!senha?.trim()) {
-      throw new TypeError('senha não pode ser vazio');
+    if (isEmpty(senha)) {
+      return reply.status(400).send({ error: 'senha não pode ser vazio' });
     }
 
-    if (!cpf?.trim()) {
-      throw new TypeError('cpf não pode ser vazio');
+    if (!isValidEmail(email)) {
+      return reply.status(400).send({ error: 'email inválido' });
     }
 
-    if (!EMAIL_REGEX.test(email.trim())) {
-      throw new TypeError('email inválido');
+    const [emailExists, cpfExists] = await Promise.all([
+      database.findOne<RegisterBody>('usuarios', 'email', email),
+      database.findOne<RegisterBody>('usuarios', 'cpf', cpf),
+    ]);
+
+    if (emailExists) {
+      return reply.status(400).send({ error: 'email já existente' });
     }
 
-    logger.info({ nome, email, cpf });
+    if (cpfExists) {
+      return reply.status(400).send({ error: 'cpf já existente' });
+    }
 
-    const data = req.body;
+    await database.create<RegisterBody>({
+      nome,
+      email,
+      senha: await argon2.hash(senha),
+      cpf,
+    });
 
-    await database.create<RegisterBody>(data);
+    logger.info({ user: { nome, email, cpf } }, 'usuário cadastrado');
 
-    logger.info('Cadastro realizado com sucesso');
-
-    return reply.send('ok');
-  });
-
-  // app.post('/login', (req, reply) => {});
-
-  app.get('/users', () => {
-    return [];
+    return reply
+      .status(200)
+      .send({ message: 'usuário cadastrado com sucesso' });
   });
 }
 
