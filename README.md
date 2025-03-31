@@ -16,7 +16,7 @@ API simples para gerenciamento de usuários
 
 - POST /api/register: Cadastro de novo usuário
 
-  ```json
+```json
 {
   "nome": "carlos santos",
   "email": "carlo123s@carlos.com", 
