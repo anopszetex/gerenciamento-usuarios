@@ -108,7 +108,7 @@ function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
     return reply.status(200).send({ token });
   });
 
-  app.get('/users', { preHandler: verifyJWT }, (req, reply) => {
+  app.get('/users', { preHandler: verifyJWT(logger) }, (req, reply) => {
     return [];
   });
 }
