@@ -1,14 +1,23 @@
-import type { FastifyInstance } from 'fastify';
 import argon2 from 'argon2';
+import jwt from 'jsonwebtoken';
+
+import type { FastifyInstance } from 'fastify';
 
 import { UserRoutesOptions } from '@/adapters/server/fastify/types';
 import { isEmpty, isValidEmail } from '@/domains/register';
+
+import { auth } from '@/infra/config';
 
 interface RegisterBody {
   nome: string;
   email: string;
   senha: string;
   cpf: string;
+}
+
+interface LoginBody {
+  email: string;
+  senha: string;
 }
 
 function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
@@ -56,8 +65,46 @@ function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
     logger.info({ user: { nome, email, cpf } }, 'usuário cadastrado');
 
     return reply
-      .status(200)
+      .status(201)
       .send({ message: 'usuário cadastrado com sucesso' });
+  });
+
+  app.post<{ Body: LoginBody }>('/login', async (req, reply) => {
+    const { email, senha } = req.body;
+
+    if (isEmpty(email)) {
+      return reply.status(400).send({ error: 'email não pode ser vazio' });
+    }
+
+    if (isEmpty(senha)) {
+      return reply.status(400).send({ error: 'senha não pode ser vazio' });
+    }
+
+    const user = await database.findOne<LoginBody & { id: number }>(
+      'usuarios',
+      'email',
+      email
+    );
+
+    if (!user?.email) {
+      logger.warn(`usuário não encontrado ${user?.email}`);
+      return reply.status(400).send('Usuário não encontrado');
+    }
+
+    const isValidPassword = await argon2.verify(user?.senha, senha);
+
+    if (!isValidPassword) {
+      logger.warn(`Password not match: ${email}`);
+      return reply.status(400).send({ error: 'usuário não encontrado' });
+    }
+
+    const token = jwt.sign({ id: user.id, email: user.email }, auth.JWT_KEY, {
+      expiresIn: '1h',
+    });
+
+    logger.info('usuario autenticado com sucesso');
+
+    return reply.status(200).send({ token });
   });
 }
 
