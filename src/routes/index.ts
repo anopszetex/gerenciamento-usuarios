@@ -108,8 +108,9 @@ function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
     return reply.status(200).send({ token });
   });
 
-  app.get('/users', { preHandler: verifyJWT(logger) }, (req, reply) => {
-    return [];
+  app.get('/users', { preHandler: verifyJWT(logger) }, async (_, reply) => {
+    const users = await database.findAll<RegisterBody>('usuarios', ['*']);
+    return reply.send(users);
   });
 }
 

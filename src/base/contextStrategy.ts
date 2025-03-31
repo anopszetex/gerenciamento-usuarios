@@ -7,6 +7,7 @@ function createContextStrategy(strategy: ReturnType<typeof postgreStrategy>) {
     destroy: strategy.destroy,
     create: strategy.create,
     findOne: strategy.findOne,
+    findAll: strategy.findAll,
   };
 }
 

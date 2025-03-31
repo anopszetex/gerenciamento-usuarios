@@ -18,6 +18,13 @@ function postgreStrategy(conn: Knex) {
         .where({ [field]: value })
         .first() as T | undefined;
     },
+    async findAll<T>(
+      table: string,
+      columns: (keyof T)[] | ['*']
+    ): Promise<T[]> {
+      const list = (await conn(table).select(columns)) as T[];
+      return list;
+    },
   };
 }
 

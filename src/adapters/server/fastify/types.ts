@@ -16,6 +16,7 @@ interface Database {
     field: keyof T,
     value: T[keyof T]
   ): Promise<T | undefined>;
+  findAll<T>(table: string, columns: (keyof T)[] | ['*']): Promise<T[]>;
 }
 
 interface UserRoutesOptions extends FastifyPluginOptions {
