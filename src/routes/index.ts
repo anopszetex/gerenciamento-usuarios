@@ -2,24 +2,14 @@ import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 
 import type { FastifyInstance } from 'fastify';
+import type { LoginBody, RegisterBody, UsersBody } from './types';
 
 import { UserRoutesOptions } from '@/adapters/server/fastify/types';
 import { isEmpty, isValidEmail } from '@/domains/register';
 
 import { auth } from '@/infra/config';
 import { verifyJWT } from '@/domains/auth/verify';
-
-interface RegisterBody {
-  nome: string;
-  email: string;
-  senha: string;
-  cpf: string;
-}
-
-interface LoginBody {
-  email: string;
-  senha: string;
-}
+import { anonymizeCPF } from '@/domains/users/anonymizeCPF';
 
 function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
   const { database, logger } = options;
@@ -109,8 +99,19 @@ function userRoutes(app: FastifyInstance, options: UserRoutesOptions) {
   });
 
   app.get('/users', { preHandler: verifyJWT(logger) }, async (_, reply) => {
-    const users = await database.findAll<RegisterBody>('usuarios', ['*']);
-    return reply.send(users);
+    const users = await database.findAll<UsersBody>('usuarios', ['*']);
+
+    const list = [];
+
+    for (const user of users) {
+      list.push({
+        id: user.id,
+        email: user.email,
+        cpf: anonymizeCPF(user.cpf),
+      });
+    }
+
+    return reply.send(list);
   });
 }
 
