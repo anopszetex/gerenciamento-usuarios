@@ -1,6 +1,7 @@
 import closeWithGrace from 'close-with-grace';
 
 import { factoryServer } from '@/adapters/server/fastify';
+// import { factoryServer } from '@/adapters/server/express';
 
 import { createConnection } from '@/infra/db';
 import { loadDb } from '@/base/contextStrategy';
