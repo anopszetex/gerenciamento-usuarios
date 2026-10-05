@@ -8,8 +8,18 @@
     "dev:watch": "nodemon --exec 'ts-node -r tsconfig-paths/register' src/index.ts",
     "dev": "npx ts-node  -r tsconfig-paths/register src/index.ts",
     "knex:migrate": "npx knex migrate:latest",
-    "knex:rollback": "npx knex migrate:rollback"
+    "knex:rollback": "npx knex migrate:rollback",
+    "lint": "eslint src",
+    "test": "npm run lint && npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anopszetex/gerenciamento-usuarios.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anopszetex/gerenciamento-usuarios/issues"
+  },
+  "homepage": "https://github.com/anopszetex/gerenciamento-usuarios#readme",
   "keywords": [],
   "author": "",
   "license": "ISC",

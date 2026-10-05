@@ -1,81 +1,111 @@
-## 📘 Gerenciamento de Usuários
+# gerenciamento-usuarios
 
-### ⚙️ Tecnologias
+API REST em **TypeScript** para gerenciamento de usuários com autenticação JWT, hash de senhas com **Argon2** e persistência em **PostgreSQL**.
 
-- Fastify — Framework web rápido e leve para Node.js
-- TypeScript — Superset de JavaScript com tipagem estática
-- Knex.js — Query builder SQL para Node.js
-- PostgreSQL — Banco de dados relacional
-- Pino — Logger de alta performance
-- Argon2 — Hash seguro de senhas
-- JWT — Autenticação com tokens
+O projeto organiza o código em camadas (`domains`, `adapters`, `infra`, `strategies`) para manter as regras de negócio separadas de frameworks e detalhes de infraestrutura.
 
-### 🚀 Subindo o ambiente
+## Tecnologias
 
-- Subir os containers necessários (ex: PostgreSQL)
+- [Node.js](https://nodejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Fastify](https://www.fastify.io/) — framework web rápido e leve
+- [Knex.js](https://knexjs.org/) — query builder SQL
+- [PostgreSQL](https://www.postgresql.org/)
+- [Pino](https://getpino.io/) — logger de alta performance
+- [Argon2](https://github.com/ranisalt/node-argon2) — hash seguro de senhas
+- [JWT](https://jwt.io/) — autenticação com tokens
+
+## Arquitetura
+
+```text
+src/
+├── adapters/server/fastify  # adaptadores HTTP
+├── domains                  # regras de negócio (auth, register, users)
+├── infra                    # banco de dados, configurações
+├── routes                   # definição de rotas
+├── strategies               # estratégias de acesso a dados
+└── support                  # logger e utilitários
+```
+
+## Como rodar
+
+### Pré-requisitos
+
+- Node.js
+- Docker e Docker Compose
+
+### Subir o banco
 
 ```sh
 docker-compose up -d
 ```
 
-- Rodar as migrations
+### Instalar dependências
 
 ```sh
-yarn knex:migrate
+npm install
 ```
 
-- Iniciar o servidor
+### Rodar migrations
 
+```sh
+npm run knex:migrate
 ```
-yarn dev
+
+### Iniciar o servidor
+
+```sh
+npm run dev
 ```
 
-- Isso irá subir a API com Fastify, conectada ao banco de dados configurado no Docker.
+O servidor sobe em `http://localhost:4000` por padrão.
 
-### 📁 Funcionalidades
+## Scripts
 
-- POST /api/register: Cadastro de novo usuário
+| Comando | Descrição |
+| --- | --- |
+| `npm run dev` | Inicia em modo desenvolvimento |
+| `npm run dev:watch` | Inicia com recarga automática |
+| `npm run build` | Compila o TypeScript |
+| `npm run knex:migrate` | Executa as migrations |
+| `npm run knex:rollback` | Reverte a última migration |
+| `npm test` | Executa os checks de qualidade |
+| `npm run lint` | Executa o ESLint |
+
+## Endpoints
+
+### `POST /api/register`
+
+Cadastra um novo usuário.
 
 ```json
 {
-  "nome": "carlos santos",
-  "email": "carlo123s@carlos.com", 
-  "senha": "carlos123", 
+  "nome": "Carlos Santos",
+  "email": "carlos@example.com",
+  "senha": "senhaSegura123",
   "cpf": "896.285.890-24"
 }
 ```
 
-- POST /api/login: Autenticação de usuário
+### `POST /api/login`
+
+Autentica o usuário e retorna um token JWT.
 
 ```json
 {
-  "email": "carlo123s@carlos.com", 
-  "senha": "carlos123"
+  "email": "carlos@example.com",
+  "senha": "senhaSegura123"
 }
 ```
 
-- GET /api/users: Listagem de usuários `(autenticado)`
+### `GET /api/users`
 
-### 🧪 Scripts
-
-```sh
-# yarn dev
-Inicia o projeto em modo desenvolvimento
-
-# yarn build
-Compila o projeto com tsc e tsc-alias
-
-# executa as migrations do banco
-yarn knex:migrate
-
-# reverte a última migration executada
-yarn knex:rollback
-```
-
-### 🔐 Autenticação
-
-As rotas protegidas utilizam autenticação via JWT. O token deve ser enviado no header:
+Lista os usuários cadastrados. Requer autenticação via header:
 
 ```sh
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjYXJsbzEyM3NAY2FybG9zLmNvbSIsImlhdCI6MTc0MzM5MDgxOSwiZXhwIjoxNzQzMzk4MDE5fQ.cOmzDXLShXE3fDkxpO8pTfnPYNMIz1V7CWXdbzJjs6c
+authorization: <token-jwt>
 ```
+
+## Licença
+
+[MIT](LICENSE)
