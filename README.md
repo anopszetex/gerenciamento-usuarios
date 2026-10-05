@@ -1,7 +1,7 @@
 <details>
 <summary><strong>🇧🇷 Ver documentação em Português (Brasil)</strong></summary>
 
-# gerenciamento-usuarios
+# user-management
 
 API REST em **TypeScript** para gerenciamento de usuários com autenticação JWT, hash de senhas com **Argon2** e persistência em **PostgreSQL**.
 
