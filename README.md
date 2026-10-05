@@ -1,7 +1,7 @@
 <details>
 <summary><strong>🇧🇷 Ver documentação em Português (Brasil)</strong></summary>
 
-# user-management
+# gerenciamento-usuarios
 
 API REST em **TypeScript** para gerenciamento de usuários com autenticação JWT, hash de senhas com **Argon2** e persistência em **PostgreSQL**.
 
@@ -115,7 +115,7 @@ authorization: <token-jwt>
 
 </details>
 
-# gerenciamento-usuarios
+# user-management
 
 A TypeScript REST API for user management with JWT authentication, Argon2 password hashing, Fastify, Knex, and PostgreSQL. Domain rules are separated from HTTP and persistence concerns through layered adapters and strategies.
 
