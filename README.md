@@ -117,8 +117,6 @@ authorization: <token-jwt>
 
 # gerenciamento-usuarios
 
----
-
 A TypeScript REST API for user management with JWT authentication, Argon2 password hashing, Fastify, Knex, and PostgreSQL. Domain rules are separated from HTTP and persistence concerns through layered adapters and strategies.
 
 ## Requirements and setup
