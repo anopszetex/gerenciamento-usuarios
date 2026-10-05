@@ -1,5 +1,3 @@
-# gerenciamento-usuarios
-
 <details>
 <summary><strong>🇧🇷 Ver documentação em Português (Brasil)</strong></summary>
 
@@ -116,6 +114,8 @@ authorization: <token-jwt>
 [MIT](LICENSE)
 
 </details>
+
+# gerenciamento-usuarios
 
 ---
 
