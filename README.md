@@ -1,53 +1,5 @@
 # gerenciamento-usuarios
 
-A TypeScript REST API for user management with JWT authentication, Argon2 password hashing, Fastify, Knex, and PostgreSQL. Domain rules are separated from HTTP and persistence concerns through layered adapters and strategies.
-
-## Requirements and setup
-
-- Node.js 22+
-- Docker and Docker Compose
-
-```sh
-docker-compose up -d
-npm ci
-npm run knex:migrate
-npm run dev
-```
-
-The server listens on `http://localhost:4000` by default.
-
-## Main endpoints
-
-- `POST /api/register` — create an account.
-- `POST /api/login` — authenticate and obtain a JWT.
-- `GET /api/users` — list users with an `authorization` token.
-
-## Architecture
-
-```text
-src/
-├── adapters/server/fastify  # HTTP adapter
-├── domains                  # authentication and user rules
-├── infra                    # configuration and database
-├── routes                   # route definitions
-├── strategies               # persistence strategies
-└── support                  # logging and shared utilities
-```
-
-## Quality checks
-
-```sh
-npm test
-```
-
-The command runs lint and a complete TypeScript build. Automated behavioral tests are the next planned improvement.
-
-## License
-
-[MIT](LICENSE)
-
----
-
 <details>
 <summary><strong>🇧🇷 Ver documentação em Português (Brasil)</strong></summary>
 
@@ -164,3 +116,51 @@ authorization: <token-jwt>
 [MIT](LICENSE)
 
 </details>
+
+---
+
+A TypeScript REST API for user management with JWT authentication, Argon2 password hashing, Fastify, Knex, and PostgreSQL. Domain rules are separated from HTTP and persistence concerns through layered adapters and strategies.
+
+## Requirements and setup
+
+- Node.js 22+
+- Docker and Docker Compose
+
+```sh
+docker-compose up -d
+npm ci
+npm run knex:migrate
+npm run dev
+```
+
+The server listens on `http://localhost:4000` by default.
+
+## Main endpoints
+
+- `POST /api/register` — create an account.
+- `POST /api/login` — authenticate and obtain a JWT.
+- `GET /api/users` — list users with an `authorization` token.
+
+## Architecture
+
+```text
+src/
+├── adapters/server/fastify  # HTTP adapter
+├── domains                  # authentication and user rules
+├── infra                    # configuration and database
+├── routes                   # route definitions
+├── strategies               # persistence strategies
+└── support                  # logging and shared utilities
+```
+
+## Quality checks
+
+```sh
+npm test
+```
+
+The command runs lint and a complete TypeScript build. Automated behavioral tests are the next planned improvement.
+
+## License
+
+[MIT](LICENSE)
