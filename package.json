@@ -1,7 +1,7 @@
 {
   "name": "@anopszetex/gerenciamento-usuarios",
   "version": "1.0.0",
-  "description": "API simples para gerenciamento de usuários",
+  "description": "TypeScript REST API for user management with JWT, Argon2 and PostgreSQL",
   "main": "index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/anopszetex/gerenciamento-usuarios#readme",
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.23.0",
     "@types/eslint-plugin-security": "^3.0.0",
